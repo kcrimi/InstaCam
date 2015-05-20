@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ShareActionProvider;
+import android.widget.Toolbar;
 
 import java.io.File;
 
@@ -27,15 +28,19 @@ public class MainActivity extends ActionBarActivity implements MaterialTabListen
     private static final String TAG = "MainActivity";
     private File mPhoto;
     private FeedFragment mFeedFragment;
+    private MaterialTabHost mTabBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MaterialTabHost tabBar = (MaterialTabHost)findViewById(R.id.tab_bar);
-        tabBar.addTab(tabBar.newTab().setText("HOME").setTabListener(this));
-        tabBar.addTab(tabBar.newTab().setText("PROFILE").setTabListener(this));
+        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        mTabBar = (MaterialTabHost)findViewById(R.id.tab_bar);
+        mTabBar.addTab(mTabBar.newTab().setIcon(getResources().getDrawable(R.drawable.ic_home)).setTabListener(this));
+        mTabBar.addTab(mTabBar.newTab().setIcon(getResources().getDrawable(R.drawable.ic_perm_identity)).setTabListener(this));
 
         mFeedFragment  = (FeedFragment)getFragmentManager().findFragmentById(R.id.feed_container);
         if(mFeedFragment == null){
@@ -55,7 +60,7 @@ public class MainActivity extends ActionBarActivity implements MaterialTabListen
 
     @Override
     public void onTabSelected(MaterialTab materialTab) {
-
+        mTabBar.setSelectedNavigationItem(materialTab.getPosition());
     }
 
     @Override

@@ -16,8 +16,12 @@ import android.widget.ShareActionProvider;
 
 import java.io.File;
 
+import it.neokree.materialtabs.MaterialTab;
+import it.neokree.materialtabs.MaterialTabHost;
+import it.neokree.materialtabs.MaterialTabListener;
 
-public class MainActivity extends ActionBarActivity {
+
+public class MainActivity extends ActionBarActivity implements MaterialTabListener{
 
     private static final int CAMERA_REQUEST = 10;
     private static final String TAG = "MainActivity";
@@ -29,6 +33,10 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        MaterialTabHost tabBar = (MaterialTabHost)findViewById(R.id.tab_bar);
+        tabBar.addTab(tabBar.newTab().setText("HOME").setTabListener(this));
+        tabBar.addTab(tabBar.newTab().setText("PROFILE").setTabListener(this));
+
         mFeedFragment  = (FeedFragment)getFragmentManager().findFragmentById(R.id.feed_container);
         if(mFeedFragment == null){
             mFeedFragment = new FeedFragment();
@@ -37,6 +45,21 @@ public class MainActivity extends ActionBarActivity {
                     .add(R.id.feed_container, mFeedFragment)
                     .commit();
         }
+
+    }
+
+    @Override
+    public void onTabReselected(MaterialTab materialTab) {
+
+    }
+
+    @Override
+    public void onTabSelected(MaterialTab materialTab) {
+
+    }
+
+    @Override
+    public void onTabUnselected(MaterialTab materialTab) {
 
     }
 

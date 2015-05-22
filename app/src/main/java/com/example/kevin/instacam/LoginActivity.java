@@ -1,5 +1,6 @@
 package com.example.kevin.instacam;
 
+import android.app.DownloadManager;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -7,9 +8,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.facebook.Request;
+import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
+import com.facebook.model.GraphUser;
 
 
 public class LoginActivity extends ActionBarActivity {
@@ -30,10 +34,24 @@ public class LoginActivity extends ActionBarActivity {
         });
     }
 
-    private void onSessionStateChanged(Session session, SessionState sessionState, Exception e){
+    private void onSessionStateChanged(final Session session, SessionState sessionState, Exception e){
         if (sessionState.isOpened()){
-            Intent i = new Intent(this, MainActivity.class);
-            startActivity(i);
+            Request request = Request.newMeRequest(session, new Request.GraphUserCallback() {
+                @Override
+                public void onCompleted(GraphUser graphUser, Response response) {
+                    if (session == Session.getActiveSession()){
+                        if (graphUser != null){
+                            Log.d(TAG, graphUser.toString());
+//                            Intent i = new Intent(this, MainActivity.class);
+//                            startActivity(i);
+                        }
+                    }
+                    if (response.getError() != null){
+                        //TODO: add some error handling
+                    }
+                }
+            });
+            request.executeAsync();
         }else{
             Log.d(TAG, "Session Closed");
         }

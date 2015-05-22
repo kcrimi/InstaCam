@@ -28,4 +28,5 @@ dependencies {
     compile 'com.kevincrimi.materiallibrary:materiallibrary:0.1.0'
     compile 'it.neokree:MaterialTabs:0.11'
     compile 'com.squareup.picasso:picasso:2.5.0'
+    compile 'com.facebook.android:facebook-android-sdk:4.0.0'
 }

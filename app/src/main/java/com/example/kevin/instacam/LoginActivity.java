@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
@@ -36,21 +37,25 @@ public class LoginActivity extends ActionBarActivity {
 
     private void onSessionStateChanged(final Session session, SessionState sessionState, Exception e){
         if (sessionState.isOpened()){
-            Request request = Request.newMeRequest(session, new Request.GraphUserCallback() {
+            Bundle parameters = new Bundle();
+            parameters.putString("fields","picture,first_name,last_name,birthday");
+            Request request = new Request(session, "/me", parameters, HttpMethod.GET, new Request.Callback() {
                 @Override
-                public void onCompleted(GraphUser graphUser, Response response) {
+                public void onCompleted(Response response) {
                     if (session == Session.getActiveSession()){
-                        if (graphUser != null){
-                            Log.d(TAG, graphUser.toString());
+                        if (response.getGraphObject() != null){
+                            Log.d(TAG, response.getGraphObject().toString());
 //                            Intent i = new Intent(this, MainActivity.class);
 //                            startActivity(i);
                         }
                     }
                     if (response.getError() != null){
                         //TODO: add some error handling
+                        Log.d(TAG, "Error is "+response.getError());
                     }
                 }
             });
+
             request.executeAsync();
         }else{
             Log.d(TAG, "Session Closed");

@@ -23,7 +23,8 @@ public class FeedFragment extends Fragment {
     private FeedAdapter mAdapter;
 
     public FeedFragment() {
-        // Required empty public constructor
+        mPhotos = new ArrayList<Photo>();
+        mAdapter = new FeedAdapter(getActivity(), mPhotos);
     }
 
 
@@ -34,8 +35,6 @@ public class FeedFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_feed, container, false);
         RecyclerView recyclerView = (RecyclerView)v.findViewById(R.id.feed_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mPhotos = new ArrayList<Photo>();
-        mAdapter = new FeedAdapter(getActivity(), mPhotos);
         recyclerView.setAdapter(mAdapter);
         return v;
     }

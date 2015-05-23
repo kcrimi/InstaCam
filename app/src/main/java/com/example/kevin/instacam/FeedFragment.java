@@ -23,7 +23,7 @@ public class FeedFragment extends Fragment {
     private FeedAdapter mAdapter;
 
     public FeedFragment() {
-        mPhotos = new ArrayList<Photo>();
+        mPhotos = Feed.getInstance();
         mAdapter = new FeedAdapter(getActivity(), mPhotos);
     }
 
@@ -33,6 +33,7 @@ public class FeedFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_feed, container, false);
+
         RecyclerView recyclerView = (RecyclerView)v.findViewById(R.id.feed_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mAdapter);

@@ -13,6 +13,7 @@ import com.facebook.widget.LoginButton;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 
 /**
@@ -20,6 +21,7 @@ import java.text.SimpleDateFormat;
  */
 public class ProfileFragment extends Fragment {
 
+    private List<Photo> mPhotos;
     private ImageView mCoverImage;
     private ImageView mAvatar;
     private TextView mBirthday;
@@ -27,7 +29,7 @@ public class ProfileFragment extends Fragment {
     private TextView mUsername;
 
     public ProfileFragment() {
-        // Required empty public constructor
+        mPhotos = Feed.getInstance();
     }
 
 
@@ -39,7 +41,6 @@ public class ProfileFragment extends Fragment {
         setRetainInstance(true);
 
         LoginButton loginButton = (LoginButton)v.findViewById(R.id.profile_logout_button);
-
 
         User user = User.getCurrentUser();
         mCoverImage = (ImageView)v.findViewById(R.id.profile_cover_image);
@@ -54,7 +55,7 @@ public class ProfileFragment extends Fragment {
         Picasso.with(getActivity()).load(user.getAvatarUrl()).into(mAvatar);
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         mBirthday.setText(sdf.format(user.getBirthday()));
-        mPostCount.setText("300");
+        mPostCount.setText(""+mPhotos.size());
 
         return v;
     }

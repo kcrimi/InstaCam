@@ -15,7 +15,6 @@ public class User {
 
     private static final String TAG = "User";
     private static User sCurrentUser;
-    private static User mInstance = null;
 
     private String mFirstName;
     private String mLastName;
@@ -45,13 +44,6 @@ public class User {
         if (sCurrentUser == null) {
             sCurrentUser = new User(graphObject);
         }
-    }
-
-    public static User getInstance(){
-        if (mInstance == null) {
-            mInstance = new User();
-        }
-        return mInstance;
     }
 
     public Date getBirthday() {

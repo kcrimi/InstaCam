@@ -14,6 +14,8 @@ import java.util.Date;
 public class User {
 
     private static final String TAG = "User";
+    private static User sCurrentUser;
+    private static User mInstance = null;
 
     private String mFirstName;
     private String mLastName;
@@ -33,6 +35,23 @@ public class User {
         mAvatarUrl = (String)graphObject.getPropertyAs("picture",GraphObject.class)
                 .getPropertyAs("data", GraphObject.class)
                 .getProperty("url");
+    }
+
+    public static User getCurrentUser() {
+        return sCurrentUser;
+    }
+
+    public static void setCurrentUser(GraphObject graphObject) {
+        if (sCurrentUser == null) {
+            sCurrentUser = new User(graphObject);
+        }
+    }
+
+    public static User getInstance(){
+        if (mInstance == null) {
+            mInstance = new User();
+        }
+        return mInstance;
     }
 
     public Date getBirthday() {

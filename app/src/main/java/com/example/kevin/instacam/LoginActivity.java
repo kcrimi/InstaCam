@@ -63,14 +63,9 @@ public class LoginActivity extends ActionBarActivity {
                 public void onCompleted(Response response) {
                     if (session == Session.getActiveSession()){
                         if (response.getGraphObject() != null){
-                            User user = new User(response.getGraphObject());
-
-                            Log.d(TAG, "User is "+user.getFirstName()+" "+user.getLastName());
-                            Log.d(TAG, "Birthday is "+user.getBirthday());
-                            Log.d(TAG, user.getAvatarUrl());
-
-//                            Intent i = new Intent(this, MainActivity.class);
-//                            startActivity(i);
+                            User.setCurrentUser(response.getGraphObject());
+                            Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(i);
                         }
                     }
                     if (response.getError() != null){

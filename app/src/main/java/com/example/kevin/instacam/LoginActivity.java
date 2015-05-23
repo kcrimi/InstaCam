@@ -1,6 +1,5 @@
 package com.example.kevin.instacam;
 
-import android.app.DownloadManager;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -14,7 +13,9 @@ import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
-import com.facebook.model.GraphUser;
+import com.facebook.widget.LoginButton;
+
+import java.util.List;
 
 
 public class LoginActivity extends ActionBarActivity {
@@ -27,6 +28,9 @@ public class LoginActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        LoginButton loginButton = (LoginButton)findViewById(R.id.login_button);
+        loginButton.setReadPermissions("user_birthday");
+
         mUiLifecycleHelper = new UiLifecycleHelper(this, new Session.StatusCallback() {
             @Override
             public void call(Session session, SessionState sessionState, Exception e) {
@@ -37,6 +41,21 @@ public class LoginActivity extends ActionBarActivity {
 
     private void onSessionStateChanged(final Session session, SessionState sessionState, Exception e){
         if (sessionState.isOpened()){
+            List<String> permissions = Session.getActiveSession().getPermissions();
+
+            boolean hasBirthdayPermission = false;
+            for(String permission:permissions){
+                if(permission.equals("user_birthday")){
+                    hasBirthdayPermission = true;
+                }
+            }
+
+            if(!hasBirthdayPermission){
+                Session.NewPermissionsRequest permissionsRequest = new Session.NewPermissionsRequest(this, "user_birthday");
+                session.requestNewReadPermissions(permissionsRequest);
+                return;
+            }
+
             Bundle parameters = new Bundle();
             parameters.putString("fields","picture,first_name,last_name,birthday");
             Request request = new Request(session, "/me", parameters, HttpMethod.GET, new Request.Callback() {
@@ -44,7 +63,12 @@ public class LoginActivity extends ActionBarActivity {
                 public void onCompleted(Response response) {
                     if (session == Session.getActiveSession()){
                         if (response.getGraphObject() != null){
-                            Log.d(TAG, response.getGraphObject().toString());
+                            User user = new User(response.getGraphObject());
+
+                            Log.d(TAG, "User is "+user.getFirstName()+" "+user.getLastName());
+                            Log.d(TAG, "Birthday is "+user.getBirthday());
+                            Log.d(TAG, user.getAvatarUrl());
+
 //                            Intent i = new Intent(this, MainActivity.class);
 //                            startActivity(i);
                         }

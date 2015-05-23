@@ -57,7 +57,7 @@ public class LoginActivity extends ActionBarActivity {
             }
 
             Bundle parameters = new Bundle();
-            parameters.putString("fields","picture,first_name,last_name,birthday");
+            parameters.putString("fields","picture,first_name,last_name,birthday,cover");
             Request request = new Request(session, "/me", parameters, HttpMethod.GET, new Request.Callback() {
                 @Override
                 public void onCompleted(Response response) {

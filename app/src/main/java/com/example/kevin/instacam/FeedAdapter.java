@@ -20,13 +20,15 @@ import java.util.List;
  */
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    private List<Photo> mPhotos;
+    private Context mContext;
 
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView mCaption;
         private final ImageView mPhoto;
         private final ImageView mAvatar;
-        private final TextView mUsername;
 
+        private final TextView mUsername;
         public ViewHolder(View itemView) {
             super(itemView);
             mCaption = (TextView)itemView.findViewById(R.id.feed_item_caption);
@@ -34,10 +36,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             mAvatar = (ImageView)itemView.findViewById(R.id.feed_item_user_avatar);
             mUsername = (TextView)itemView.findViewById(R.id.feed_item_user_name);
         }
-    }
 
-    private List<Photo> mPhotos;
-    private Context mContext;
+    }
 
     public FeedAdapter(Context context, List<Photo> photos) {
         mContext = context;

@@ -35,10 +35,19 @@ public class LoginActivity extends ActionBarActivity {
             @Override
             public void call(Session session, SessionState sessionState, Exception e) {
                 onSessionStateChanged(session, sessionState, e);
+
             }
         });
+        if (Session.getActiveSession().isOpened()){
+            login();
+        }
     }
 
+    private void login(){
+        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+        i.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK );
+        startActivity(i);
+    }
     private void onSessionStateChanged(final Session session, SessionState sessionState, Exception e){
         if (sessionState.isOpened()){
             List<String> permissions = Session.getActiveSession().getPermissions();
@@ -64,9 +73,7 @@ public class LoginActivity extends ActionBarActivity {
                     if (session == Session.getActiveSession()){
                         if (response.getGraphObject() != null){
                             User.setCurrentUser(response.getGraphObject());
-                            Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                            i.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK );
-                            startActivity(i);
+                            login();
                         }
                     }
                     if (response.getError() != null){

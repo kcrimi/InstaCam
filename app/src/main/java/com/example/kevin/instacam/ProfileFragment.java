@@ -62,7 +62,14 @@ public class ProfileFragment extends Fragment {
         Picasso.with(getActivity()).load(user.getAvatarUrl()).into(mAvatar);
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         mBirthday.setText(sdf.format(user.getBirthday()));
-        mPostCount.setText(""+mPhotos.size());
+        int photoCount = 0;
+        for (Photo photo : mPhotos) {
+            if (photo.getUser().getFirstName().equals(User.getCurrentUser().getFirstName())
+                    && photo.getUser().getLastName().equals(User.getCurrentUser().getLastName())){
+                photoCount++;
+            }
+        }
+        mPostCount.setText(Integer.toString(photoCount));
 
         mUiLifecycleHelper = new UiLifecycleHelper(getActivity(), new Session.StatusCallback() {
             @Override
@@ -77,7 +84,7 @@ public class ProfileFragment extends Fragment {
 
     private void onSessionStateChanged(Session session, SessionState sessionState, Exception e) {
         if (sessionState.isClosed()) {
-            Log.d("Profile","Session state changed");
+            Log.d("Profile", "Session state changed");
             Intent i = new Intent(getActivity(), LoginActivity.class);
             i.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK );
             User.clearCurrentUser();

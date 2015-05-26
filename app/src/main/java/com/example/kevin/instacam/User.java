@@ -53,6 +53,10 @@ public class User implements Serializable{
         }
     }
 
+    public static void clearCurrentUser() {
+        sCurrentUser = null;
+    }
+
     public Date getBirthday() {
         return mBirthday;
     }

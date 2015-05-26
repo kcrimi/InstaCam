@@ -80,6 +80,7 @@ public class ProfileFragment extends Fragment {
             Log.d("Profile","Session state changed");
             Intent i = new Intent(getActivity(), LoginActivity.class);
             i.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK );
+            User.clearCurrentUser();
             startActivity(i);
         }
     }

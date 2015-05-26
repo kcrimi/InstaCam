@@ -65,6 +65,7 @@ public class LoginActivity extends ActionBarActivity {
                         if (response.getGraphObject() != null){
                             User.setCurrentUser(response.getGraphObject());
                             Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                            i.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK );
                             startActivity(i);
                         }
                     }
